@@ -1,85 +1,69 @@
 {
-    "name": "hightlight-selections-vscode",
-    "displayName": "hightlight-selections-vscode",
-    "description": "Select or double click a word to highlight it in your editor.",
-    "version": "0.0.1",
-    "publisher": "cliffordfajardo",
-    "engines": {
-        "vscode": "^1.19.0"
-    },
-    "categories": [
-        "Other"
-    ],
-    "keywords": [
-        "code highlighter",
-        "highlight",
-        "highlight occurences",
-        "highlight selection",
-        "highlight selected",
-        "multi-root ready"
-    ],
-    "galleryBanner": {
-        "color": "#232323",
-        "theme": "dark"
-    },
-    "icon": "images/highlight-selections-logo.png",
+  "name": "highlight-selections-vscode",
+  "displayName": "Highlight Selections",
+  "description": "Enhanced selection(s) highlighting for your text editor.",
+  "version": "0.0.1",
+  "publisher": "Petter Wahlman",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
     "repository": {
-        "type": "git",
-        "url": "https://github.com/cliffordfajardo/highlight-selections-vscode"
-    },
-    "activationEvents": [
-        "*"
-    ],
-    "main": "./out/extension",
-    "contributes": {
-        "configuration": {
-            "properties": {
-                "highlightSelections.borderColor": {
-                    "type": [
-                        "string"
-                    ],
-                    "default": "#65EAB9",
-                    "description": "Change the border color. (Ex: 'red', '#FFF' #FFFFFFF, 'RGB(255,255,255)','RGB(255, 255, 255. 0.5) )"
-                },
-                "highlightSelections.borderWidth": {
-                    "type": [
-                        "string"
-                    ],
-                    "default": "1px"
-                },
-                "highlightSelections.borderStyle": {
-                    "type": [
-                        "string"
-                    ],
-                    "enum": [
-                        "solid",
-                        "dashed",
-                        "inset",
-                        "double",
-                        "groove",
-                        "outset",
-                        "ridge"
-                    ],
-                    "default": "solid"
-                }
-            }
+    "type": "git",
+    "url": "https://github.com/ilAYAli/highlight-selections-vscode.git"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Highlight Selections",
+      "properties": {
+        "highlightSelections.borderColor": {
+          "type": "string",
+          "default": "red",
+          "description": "Specifies the border color used & is changeable to any valid CSS color value."
+        },
+        "highlightSelections.borderWidth": {
+          "type": "string",
+          "default": "2px",
+          "description": "Specifies the width of the border in pixels."
+        },
+        "highlightSelections.borderStyle": {
+          "type": "string",
+          "default": "solid",
+          "description": "Specifies the border style of the line."
         }
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.6",
-        "@types/node": "^7.0.43",
-        "@types/mocha": "^2.2.42"
-    },
-    "dependencies": {
-        "escape-string-regexp": "^1.0.5",
-        "lodash.debounce": "^4.0.8"
+      }
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.3",
+    "@types/lodash.debounce": "^4.0.9",
+    "@types/mocha": "^8.0.0",
+    "@types/node": "^14.0.27",
+    "@types/vscode": "^1.94.0",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "eslint": "^7.9.0",
+    "glob": "^7.1.6",
+    "mocha": "^10.7.3",
+    "typescript": "^4.0.2",
+    "vscode-test": "^1.4.0"
+  },
+  "dependencies": {
+    "escape-string-regexp": "^4.0.0",
+    "lodash.debounce": "^4.0.8"
+  }
 }
