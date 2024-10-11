@@ -2,7 +2,7 @@
   "name": "highlight-selections-vscode",
   "displayName": "Highlight Selections",
   "description": "Enhanced selection(s) highlighting for your text editor.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "Petter Wahlman",
   "engines": {
     "vscode": "^1.91.0"

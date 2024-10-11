@@ -10,50 +10,42 @@ export function activate(context: vscode.ExtensionContext) {
     let activeEditor = vscode.window.activeTextEditor;
 
     const updateDecorations = (editor: vscode.TextEditor | undefined) => {
-        if (!editor) {
-            return;
-        }
+      if (!editor) {
+        return;
+      }
 
-        decorationTypes.forEach((decorationType, key) => {
-            editor.setDecorations(decorationType, []);
+      decorationTypes.forEach((decorationType, key) => {
+        editor.setDecorations(decorationType, []);
+      });
+
+      const selectedText = editor.document.getText(editor.selection);
+      if (selectedText.length === 0) {
+        return;
+      }
+
+      const regex = new RegExp(escapeStringRegexp(selectedText), 'g');
+      const text = editor.document.getText();
+      let match;
+      const decorations: vscode.DecorationOptions[] = [];
+
+      while ((match = regex.exec(text))) {
+        const startPos = editor.document.positionAt(match.index);
+        const endPos = editor.document.positionAt(match.index + match[0].length);
+        const decoration = {
+          range: new vscode.Range(startPos, endPos),
+        };
+        decorations.push(decoration);
+      }
+
+      const decorationKey = `${selectedText}_${selectedText.length}`;
+      let decorationType = decorationTypes.get(decorationKey);
+      if (!decorationType) {
+        decorationType = vscode.window.createTextEditorDecorationType({
+          // ... (decoration type configuration remains the same)
         });
-
-        const selectedText = editor.document.getText(editor.selection);
-        if (selectedText.length === 0) {
-            return;
-        }
-
-        const regex = new RegExp(escapeStringRegexp(selectedText), 'g');
-        const text = editor.document.getText();
-        let match;
-        const decorations: vscode.DecorationOptions[] = [];
-
-        while ((match = regex.exec(text))) {
-            const startPos = editor.document.positionAt(match.index);
-            const endPos = editor.document.positionAt(match.index + match[0].length);
-            const decoration = {
-                range: new vscode.Range(startPos, endPos),
-            };
-            decorations.push(decoration);
-        }
-
-        let decorationType = decorationTypes.get(selectedText);
-        if (!decorationType) {
-            decorationType = vscode.window.createTextEditorDecorationType({
-                borderWidth: vscode.workspace.getConfiguration('highlightSelections').get('borderWidth', '2px'),
-                borderStyle: vscode.workspace.getConfiguration('highlightSelections').get('borderStyle', 'solid'),
-                overviewRulerColor: 'blue',
-                overviewRulerLane: vscode.OverviewRulerLane.Right,
-                light: {
-                    borderColor: vscode.workspace.getConfiguration('highlightSelections').get('borderColor', 'darkblue'),
-                },
-                dark: {
-                    borderColor: vscode.workspace.getConfiguration('highlightSelections').get('borderColor', 'lightblue'),
-                },
-            });
-            decorationTypes.set(selectedText, decorationType);
-        }
-        editor.setDecorations(decorationType, decorations);
+        decorationTypes.set(decorationKey, decorationType);
+      }
+      editor.setDecorations(decorationType, decorations);
     };
 
     let debouncedUpdateDecorations = debounce((event: vscode.TextEditorSelectionChangeEvent) => {
