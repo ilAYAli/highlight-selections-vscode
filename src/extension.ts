@@ -94,7 +94,7 @@ export async function activate(context: ExtensionContext) {
         window.visibleTextEditors.forEach((editor, index) => {
             const editorText = editor.document.getText();
 
-            const regex = new RegExp(regexPattern, 'gi');
+            const regex = new RegExp(regexPattern, 'g');
             let match;
             while (match = regex.exec(editorText)) {
                 const startPos = activeEditor.document.positionAt(match.index);
